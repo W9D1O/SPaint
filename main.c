@@ -47,9 +47,6 @@ void e_color(Color c[], Color *clr, int n, bool *Vf)
     *clr = c[num];
     *Vf = true;
   }
-  /* else{
-   return *clr = c[22];
-   }*/
    
   
 }
@@ -90,8 +87,6 @@ int main()
   InitWindow(ancho * pixel, alto * pixel, "Paint de la Salada");
   while (!WindowShouldClose())
   {
-    // num = GetKeyPressed();
-    // printf("%d\n",getchar());
     BeginDrawing();
     ClearBackground(c[21]);
     colorear(matrix, c, &num, &Vf,pun,&y,&x,&Clr);
