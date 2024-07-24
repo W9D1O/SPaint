@@ -43,7 +43,6 @@ void e_color(Color c[], Color *clr, int n, bool *Vf)
   if (n >= 48 && n <= 57)
   {
     int num = n - 48;
-    printf("Si llega\n");
     *clr = c[num];
     *Vf = true;
   }
@@ -56,17 +55,13 @@ void colorear(bool m[][ancho], Color c[], int *n, bool *Vf, Nodo *pun,int *j,int
   if (!*Vf)
   {
     e_color(c, Clr, *n, Vf);
-    printf("*Entra\n");
   }
-  printf("%p\n",pun);
   Nodo *aux = pun; 
 
   while (aux != NULL) { 
-    printf("Llego aca %d\n",aux->x);
       if (m[aux->x][aux->y])
       {
         DrawRectangle(aux->x*pixel ,aux->y*pixel , pixel, pixel, aux->c);
-        printf("Te rompes despues de aca?\n");
       }
       aux = aux->sig;
   }
