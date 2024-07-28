@@ -1,1 +1,3 @@
-gcc main.c -o main -Wall -std=c99 -Wno-missing-braces -I include/ -L lib/ -lraylib -lopengl32 -lgdi32 -lwinmm
+#!/bin/bash
+
+gcc main.c -o main -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
