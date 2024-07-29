@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "include/raylib.h"
+#include <raylib.h>
 #include <stdlib.h>
 
 #define pixel 10
