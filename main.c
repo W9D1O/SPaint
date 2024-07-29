@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include "include/raylib.h"
 #include <stdlib.h>
@@ -12,18 +11,18 @@ typedef struct Nodo{
   struct Nodo *sig;
 }Nodo;
 
-void list_c(Nodo **pun,int i,int j,Color clr)
+Nodo *list_c(Nodo *pun,int i,int j,Color clr)
 {
   Nodo *aux = (Nodo*)malloc(sizeof(Nodo));
   aux->x = i ;
   aux->y = j ;
   aux->c = clr;
-  aux->sig = *pun;
-  pun = &aux;
+  aux->sig = pun;
+  return aux;
 
 }
 
-void mouse(bool m[][ancho],int *i,int *j )
+void mouse(bool m[][ancho],int *j,int *i )
 {
   Vector2 Mposi = GetMousePosition();
   int x, y;
@@ -31,9 +30,9 @@ void mouse(bool m[][ancho],int *i,int *j )
   {
     x = Mposi.x / pixel;
     y = Mposi.y / pixel;
-    m[y][x] = true;
-    *i = x ;
-    *j = y ;
+    *j = x ;
+    *i = y ;
+    m[x][y] = true;
   }
 }
 void e_color(Color c[], Color *clr, int n, bool *Vf)
@@ -43,36 +42,25 @@ void e_color(Color c[], Color *clr, int n, bool *Vf)
   if (n >= 48 && n <= 57)
   {
     int num = n - 48;
-    printf("Si llega\n");
     *clr = c[num];
-    *Vf = true;
+    *Vf = false;
   }
-  /* else{
-   return *clr = c[22];
-   }*/
+   
+  
 }
-void colorear(bool m[][ancho], Color c[], int *n, bool *Vf, Nodo *pun)
+void colorear(bool m[][ancho], Color c[], int *n, bool *Vf, Nodo *pun,int *j,int *i,Color *Clr)
 {
-  Color Clr = BLACK;
-  int i,j;
-  mouse(m,&i,&j);
-  if(m[i][j]){
-  list_c(&pun,i,j,Clr);
-  }
+  mouse(m,i,j);
   if (!*Vf)
   {
-    e_color(c, &Clr, *n, Vf);
-    printf("*Entra\n");
+    e_color(c, Clr, *n, Vf);
   }
-  printf("%p\n",pun);
   Nodo *aux = pun; 
 
   while (aux != NULL) { 
-    printf("Llego aca %d\n",aux->x);
       if (m[aux->x][aux->y])
       {
         DrawRectangle(aux->x*pixel ,aux->y*pixel , pixel, pixel, aux->c);
-        printf("Te rompes despues de aca?\n");
       }
       aux = aux->sig;
   }
@@ -80,9 +68,10 @@ void colorear(bool m[][ancho], Color c[], int *n, bool *Vf, Nodo *pun)
 
 int main()
 {
+  Color Clr = BLACK;
   bool matrix[alto][ancho] = {false};
   bool Vf = false;
-  int num;
+  int num,x,y;
   Nodo *pun = NULL;
   Color c[26] = {LIGHTGRAY, GRAY, DARKGRAY, YELLOW, GOLD, ORANGE, PINK, RED, MAROON,
                  GREEN, LIME, DARKGREEN, SKYBLUE, BLUE, DARKBLUE, PURPLE, VIOLET, DARKPURPLE,
@@ -92,11 +81,14 @@ int main()
   InitWindow(ancho * pixel, alto * pixel, "Paint de la Salada");
   while (!WindowShouldClose())
   {
-    // num = GetKeyPressed();
-    // printf("%d\n",getchar());
     BeginDrawing();
     ClearBackground(c[21]);
-    colorear(matrix, c, &num, &Vf,pun);
+    if(IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+     pun = list_c(pun,x,y,Clr);
+    }
+    colorear(matrix, c, &num, &Vf,pun,&y,&x,&Clr);
+
     EndDrawing();
   }
   CloseWindow();
