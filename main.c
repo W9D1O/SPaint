@@ -89,11 +89,10 @@ int main()
         matrix[(int)posA.x / pixel][(int)posA.y / pixel] = true;
         pun = list_c(pun,x,y,Clr);
       }
-    colorear(c, &num, &Vf,pun,&y,&x,&Clr);
+    }
 
     EndDrawing();
   }
   CloseWindow();
   return 0;
-}
 }
