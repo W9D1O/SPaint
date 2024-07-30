@@ -22,7 +22,7 @@ Nodo *list_c(Nodo *pun,int i,int j,Color clr)
 
 }
 
-void mouse(bool m[][ancho],int *j,int *i )
+void mouse(int *j,int *i )
 {
   Vector2 Mposi = GetMousePosition();
   int x, y;
@@ -32,9 +32,10 @@ void mouse(bool m[][ancho],int *j,int *i )
     y = Mposi.y / pixel;
     *j = x ;
     *i = y ;
-    m[x][y] = true;
+    
   }
 }
+
 void e_color(Color c[], Color *clr, int n, bool *Vf)
 {
   n = GetCharPressed();
@@ -43,49 +44,51 @@ void e_color(Color c[], Color *clr, int n, bool *Vf)
   {
     int num = n - 48;
     *clr = c[num];
-    *Vf = true;
+    *Vf = false;
   }
-   
   
 }
-void colorear(bool m[][ancho], Color c[], int *n, bool *Vf, Nodo *pun,int *j,int *i,Color *Clr)
+
+void colorear(Color c[], int *n, bool *Vf, Nodo *pun,int *j,int *i,Color *Clr)
 {
-  mouse(m,i,j);
+  mouse(i,j);
   if (!*Vf)
   {
     e_color(c, Clr, *n, Vf);
   }
   Nodo *aux = pun; 
-
+  int cont = 0;
   while (aux != NULL) { 
-      if (m[aux->x][aux->y])
-      {
-        DrawRectangle(aux->x*pixel ,aux->y*pixel , pixel, pixel, aux->c);
-      }
+      DrawRectangle(aux->x*pixel ,aux->y*pixel , pixel, pixel, aux->c);
       aux = aux->sig;
+     cont ++; 
   }
+  printf("%d\n",cont);
 }
 
 int main()
 {
   Color Clr = BLACK;
-  bool matrix[alto][ancho] = {false};
   bool Vf = false;
   int num,x,y;
+  Vector2 posA;
+  bool matrix[alto][ancho] = {false};
   Nodo *pun = NULL;
   Color c[26] = {LIGHTGRAY, GRAY, DARKGRAY, YELLOW, GOLD, ORANGE, PINK, RED, MAROON,
                  GREEN, LIME, DARKGREEN, SKYBLUE, BLUE, DARKBLUE, PURPLE, VIOLET, DARKPURPLE,
                  BEIGE, BROWN, DARKBROWN, WHITE, BLACK, BLANK, MAGENTA, RAYWHITE};
-
-  //  SetTargetFPS(7);
   InitWindow(ancho * pixel, alto * pixel, "Paint de la Salada");
   while (!WindowShouldClose())
   {
     BeginDrawing();
     ClearBackground(c[21]);
-    colorear(matrix, c, &num, &Vf,pun,&y,&x,&Clr);
-    if(matrix[x][y]){
-      pun = list_c(pun,x,y,Clr);
+    colorear( c, &num, &Vf,pun,&y,&x,&Clr);
+  if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) ){
+      posA = GetMousePosition();
+      if (!matrix[(int)posA.x / pixel][(int)posA.y / pixel]) {
+        matrix[(int)posA.x / pixel][(int)posA.y / pixel] = true;
+        pun = list_c(pun,x,y,Clr);
+      }
     }
 
     EndDrawing();
