@@ -46,7 +46,7 @@ void e_color(Color c[], Color *clr, int n, bool *Vf)
     *clr = c[num];
     *Vf = false;
   }
-  
+   
 }
 
 void colorear(Color c[], int *n, bool *Vf, Nodo *pun,int *j,int *i,Color *Clr)
@@ -57,13 +57,13 @@ void colorear(Color c[], int *n, bool *Vf, Nodo *pun,int *j,int *i,Color *Clr)
     e_color(c, Clr, *n, Vf);
   }
   Nodo *aux = pun; 
-  int cont = 0;
   while (aux != NULL) { 
+      if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) &&(*i == aux->x && *j == aux->y)) {
+        aux->c = *Clr; 
+      }
       DrawRectangle(aux->x*pixel ,aux->y*pixel , pixel, pixel, aux->c);
       aux = aux->sig;
-     cont ++; 
   }
-  printf("%d\n",cont);
 }
 
 int main()
@@ -82,7 +82,7 @@ int main()
   {
     BeginDrawing();
     ClearBackground(c[21]);
-    colorear( c, &num, &Vf,pun,&y,&x,&Clr);
+    colorear(c, &num, &Vf,pun,&y,&x,&Clr);
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) ){
       posA = GetMousePosition();
       if (!matrix[(int)posA.x / pixel][(int)posA.y / pixel]) {
